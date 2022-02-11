@@ -11,7 +11,7 @@ const connection = mysql.createPool({
 });
 
 app.get("/", (req, res) => {
-  connection.query("SELECT * FROM Student", (err, rows) => {
+  connection.query("SELECT * FROM Spaces", (err, rows) => {
     if (err) {
       res.json({
         success: false,
@@ -24,6 +24,25 @@ app.get("/", (req, res) => {
       });
     }
   });
+});
+
+app.post("/lot/:id", (req, res) => {
+  connection.query(
+    `UPDATE Spaces SET space_occupied = '${req.body.occupied}' WHERE space_id = ${req.params.id}`,
+    (err, rows) => {
+      if (err) {
+        res.json({
+          success: false,
+          err,
+        });
+      } else {
+        res.json({
+          success: true,
+          rows,
+        });
+      }
+    }
+  );
 });
 
 const port = 8080;
