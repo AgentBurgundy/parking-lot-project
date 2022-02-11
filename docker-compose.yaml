@@ -2,12 +2,13 @@ version: "3.8"
 services:
   db:
     build: ./evoca-db
+    command: --default-authentication-plugin=mysql_native_password
     environment:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: test
     restart: always
     volumes:
-      - dbdata:/var/lib/mysql
+      - mysql:/var/lib/mysql
   web:
     build: ./evoca-backend
     environment:
@@ -21,4 +22,4 @@ services:
       - db
     restart: on-failure
 volumes:
-  dbdata:
+  mysql:

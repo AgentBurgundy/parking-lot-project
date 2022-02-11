@@ -1,6 +1,8 @@
 import express from "express";
-import mysql from "mysql";
+import mysql from "mysql2";
 const app = express();
+
+app.use(express.json());
 
 const connection = mysql.createPool({
   connectionLimit: 10,
@@ -28,7 +30,7 @@ app.get("/", (req, res) => {
 
 app.post("/lot/:id", (req, res) => {
   connection.query(
-    `UPDATE Spaces SET space_occupied = '${req.body.occupied}' WHERE space_id = ${req.params.id}`,
+    `INSERT INTO Spaces(space_id, space_occupied) VALUES(${req.params.id}, ${req.body.occupied}) ON DUPLICATE KEY UPDATE space_occupied=${req.body.occupied}`,
     (err, rows) => {
       if (err) {
         res.json({
