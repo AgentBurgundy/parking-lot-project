@@ -1,0 +1,24 @@
+version: "3.8"
+services:
+  db:
+    build: ./evoca-db
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: test
+    restart: always
+    volumes:
+      - dbdata:/var/lib/mysql
+  web:
+    build: ./evoca-backend
+    environment:
+      MYSQL_DATABASE: test
+      MYSQL_USER: root
+      MYSQL_PASSWORD: password
+      MYSQL_HOST: db
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    restart: on-failure
+volumes:
+  dbdata:
