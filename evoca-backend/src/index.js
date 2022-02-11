@@ -28,6 +28,6 @@ app.get("/", (req, res) => {
 
 const port = 8080;
 
-server.listen(port, () => {
+app.listen(port, () => {
   console.log(`Evoca Example Server is running on port ${port}`);
 });
